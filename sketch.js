@@ -5,7 +5,7 @@ let z = 0;
 let p = 28;
 let s = 10;
 let b = 8/3;
-let dt = 0.01;
+let h = 0.01;
 
 let points = [];
 let increment = 1.5;
@@ -19,18 +19,13 @@ function setup() {
   colorMode(HSB);
   easycam = createEasyCam();
   setAttributes('antialias', true);
+  points.push(createVector(x, y, z))
 }                                                              
 
 function draw() {
   scale(5);
   background(0);
-  let dx = (s*(y-x))*dt;
-  let dy = (x*(p-z)-y)*dt;
-  let dz = (x*y-b*z)*dt;
-  x = x + dx;
-  y = y + dy;
-  z = z + dz;
-  points.push(createVector(x, y, z));
+  rk4KLorenz();
 
   let hue  = 0;
   for (let p of points) {
@@ -51,4 +46,45 @@ function keyPressed() {
   if (key == 'a'){
     saveCanvas("lorez_atrractor", 'jpg');
   }
+}
+
+function Xfunc(x, y){
+  return (s*(y-x));
+}
+
+function Yfunc(x, y, z){
+  return (x*(p-z)-y);
+}
+
+function Zfunc(x, y, z){
+  return (x*y-b*z)
+}
+
+function rk4Lorenz(){
+  let preX = points[points.length-1].x;
+  let preY = points[points.length-1].y;
+  let preZ = points[points.length-1].z;
+
+  let k1x = Xfunc(preX, preY);
+  let k1y = Yfunc(preX, preY, preZ);
+  let k1z = Zfunc(preX, preY, preZ);
+
+  let k2x = Xfunc(preX + k1x * (h/2), preY + k1y * (h/2));
+  let k2y = Yfunc(preX + k1x * (h/2), preY + k1y * (h/2), preZ + k1z * (h/2));
+  let k2z = Zfunc(preX + k1x * (h/2), preY + k1y * (h/2), preZ + k1z * (h/2));
+
+  let k3x = Xfunc(preX + k2x * (h/2), preY + k2y * (h/2));
+  let k3y = Yfunc(preX + k2x * (h/2), preY + k2y * (h/2), preZ + k2z * (h/2));
+  let k3z = Zfunc(preX + k2x * (h/2), preY + k2y * (h/2), preZ + k2z * (h/2));
+
+  let k4x = Xfunc(preX + k3x * h, preY + k3y * h);
+  let k4y = Yfunc(preX + k3x * h, preY + k3y * h, preZ + k3z * h);
+  let k4z = Zfunc(preX + k3x * h, preY + k3y * h, preZ + k3z * h);
+
+  let nextX = preX + (h/6) * (k1x + 2 * k2x + 2* k3x + k4x);
+  let nextY = preY + (h/6) * (k1y + 2 * k2y + 2* k3y + k4y);
+  let nextZ = preZ + (h/6) * (k1z + 2 * k2z + 2* k3z + k4z);
+
+  points.push(createVector(nextX, nextY, nextZ))
+
 }
