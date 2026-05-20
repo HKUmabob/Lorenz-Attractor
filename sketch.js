@@ -2,112 +2,108 @@ let x = 0.01;
 let y = 0;
 let z = 0;
 
-let p = 28;
-let s = 10;
-let b = 8/3;
-let h = 0.01;
+const p = 28;
+const s = 10;
+const b = 8 / 3;
+const h = 0.01;
+
+const critical_x1 = Math.sqrt(b*(p - 1));
+const critical_y1 = critical_x1;
+const critical_z1 = (p - 1);
+const critical_x2 = (critical_x1 * (-1));
+const critical_y2 = critical_x2;
+const critical_z2 =critical_z1;
 
 let points = [];
 let increment = 1.5;
 
 var easycam;
 let dropdown;
+let currentMode;
+let show_critical = false;
+
+
+let singlePointMode;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight, WEBGL);
-  translate(width/2, height/2);
-  strokeWeight(5);
-  colorMode(HSB);
-  easycam = createEasyCam();
-  setAttributes('antialias', true);
+	createCanvas(windowWidth, windowHeight, WEBGL);
+	translate(width / 2, height / 2);
+	strokeWeight(5);
+	colorMode(HSB);
+	easycam = createEasyCam();
+	setAttributes('antialias', true);
 
-  points.push(createVector(x, y, z));
+	singlePointMode = new SinglePointMode();
+	singlePointMode.init();
 
-  dropdown = createSelect();
-  dropdown.position(10, 10);
-  dropdown.option('Single Point');
-  dropdown.option('3 Trails');
-  dropdown.option('Many Point');
-  dropdown.changed(chnageMode);
+	dropdown = createSelect();
+	dropdown.position(10, 10);
+	dropdown.option('Single Point');
+	dropdown.option('3 Trails');
+	dropdown.option('Many Point');
+	dropdown.changed(chnageMode);
 
-  background(0);
+	background(0);
 
-}                                                              
+}
 
 function draw() {
-  scale(5);
-  background(0);
-  rk4Lorenz();
+	background(0);
+	singlePointMode.updateDraw();
 
-  let hue  = 0;
-  for (let p of points) {
-    stroke(hue, 255, 255);
-    point(p.x, p.y, p.z);
-    if (hue === 255) {
-      increment = -1.5;
-    } else if (hue === 0) {
-      increment = 1.5;
-    }
-  
-    hue += increment;
-  }
+	if (show_critical) {
+		drawCritical();
+	}
 
 }
 
 function keyPressed() {
-  if (key == 'a'){
-    saveCanvas("lorez_atrractor", 'jpg');
-  }
+	if (key == 'a') {
+		saveCanvas("lorez_atrractor", 'jpg');
+	}
 }
 
-function Xfunc(x, y){
-  return (s*(y-x));
-}
-
-function Yfunc(x, y, z){
-  return (x*(p-z)-y);
-}
-
-function Zfunc(x, y, z){
-  return (x*y-b*z)
-}
-
-function rk4Lorenz(){
-  let preX = points[points.length-1].x;
-  let preY = points[points.length-1].y;
-  let preZ = points[points.length-1].z;
-
-  let k1x = Xfunc(preX, preY);
-  let k1y = Yfunc(preX, preY, preZ);
-  let k1z = Zfunc(preX, preY, preZ);
-
-  let k2x = Xfunc(preX + k1x * (h/2), preY + k1y * (h/2));
-  let k2y = Yfunc(preX + k1x * (h/2), preY + k1y * (h/2), preZ + k1z * (h/2));
-  let k2z = Zfunc(preX + k1x * (h/2), preY + k1y * (h/2), preZ + k1z * (h/2));
-
-  let k3x = Xfunc(preX + k2x * (h/2), preY + k2y * (h/2));
-  let k3y = Yfunc(preX + k2x * (h/2), preY + k2y * (h/2), preZ + k2z * (h/2));
-  let k3z = Zfunc(preX + k2x * (h/2), preY + k2y * (h/2), preZ + k2z * (h/2));
-
-  let k4x = Xfunc(preX + k3x * h, preY + k3y * h);
-  let k4y = Yfunc(preX + k3x * h, preY + k3y * h, preZ + k3z * h);
-  let k4z = Zfunc(preX + k3x * h, preY + k3y * h, preZ + k3z * h);
-
-  let nextX = preX + (h/6) * (k1x + 2 * k2x + 2* k3x + k4x);
-  let nextY = preY + (h/6) * (k1y + 2 * k2y + 2* k3y + k4y);
-  let nextZ = preZ + (h/6) * (k1z + 2 * k2z + 2* k3z + k4z);
-
-  points.push(createVector(nextX, nextY, nextZ))
-
-
-}
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+	resizeCanvas(windowWidth, windowHeight);
 }
 
-function chnageMode(){
-  dropdown.remove();
-  points = [];
-  setup();
+function chnageMode() {
+	currentMode = dropdown.value();
+	dropdown.remove();
+
+	points = [];
+	setup();
+}
+
+function drawCritical() {
+	push();
+	noStroke();
+	fill(255);
+
+	push();
+	translate(critical_x1, critical_y1, critical_z1);
+	sphere(1);
+	pop();
+
+	push();
+	translate(critical_x2, critical_y2, critical_z2);
+	sphere(1);
+	pop();
+
+	pop()
+}
+
+function keyPressed() {
+    if (key == 'a') {
+        saveCanvas('3point_Lorenz', 'png')
+    }
+
+    if (key == 'y') {
+        show_critical = true;
+    }
+
+    if (key == 'n') {
+        show_critical = false;
+    }
 }
