@@ -11,21 +11,33 @@ let points = [];
 let increment = 1.5;
 
 var easycam;
+let dropdown;
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
   translate(width/2, height/2);
-  strokeWeight(1);
+  strokeWeight(5);
   colorMode(HSB);
   easycam = createEasyCam();
   setAttributes('antialias', true);
-  points.push(createVector(x, y, z))
+
+  points.push(createVector(x, y, z));
+
+  dropdown = createSelect();
+  dropdown.position(10, 10);
+  dropdown.option('Single Point');
+  dropdown.option('3 Trails');
+  dropdown.option('Many Point');
+  dropdown.changed(chnageMode);
+
+  background(0);
+
 }                                                              
 
 function draw() {
   scale(5);
   background(0);
-  rk4KLorenz();
+  rk4Lorenz();
 
   let hue  = 0;
   for (let p of points) {
@@ -87,4 +99,15 @@ function rk4Lorenz(){
 
   points.push(createVector(nextX, nextY, nextZ))
 
+
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+
+function chnageMode(){
+  dropdown.remove();
+  points = [];
+  setup();
 }
