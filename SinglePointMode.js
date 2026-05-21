@@ -14,22 +14,18 @@ class SinglePointMode {
     init(){
         this.points = [];
         this.points.push(createVector(0.01, 0, 0));
+        strokeWeight(5);
     }
     
     updateDraw(){
         scale(5.5);
-        colorMode(HSB);
-
-        this.currentPosition = this.points[this.points.length - 1];
-        this.nextPosition = calculateRk4(this.currentPosition, this.s, this.p, this.b, this.h);
-        this.points.push(this.nextPosition);
 
         this.currentHue = 0;
         for (let p of this.points){
-            stroke(this.currentHue, 255, 255);
+            stroke(this.currentHue, 100, 100);
 		    point(p.x, p.y, p.z);
 
-            if (this.currentHue >= 255){
+            if (this.currentHue >= 360){
                 this.hueIncrement = -1.5;
 
             } else if (this.currentHue <= 0){
@@ -38,6 +34,11 @@ class SinglePointMode {
 
             this.currentHue += this.hueIncrement;
         }
+
+        this.currentPosition = this.points[this.points.length - 1];
+        this.nextPosition = calculateRk4(this.currentPosition, this.s, this.p, this.b, this.h);
+        this.points.push(this.nextPosition);
+
 
         if (this.points.length >= 3000){
             this.points.shift();

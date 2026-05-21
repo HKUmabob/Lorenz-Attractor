@@ -1,11 +1,11 @@
-function calculateRk4(pos, s, p, b, h) {
+function calculateRk4(position, s, p, b, h) {
     const getDx = (x, y) => s * (y - x);
     const getDy = (x, y, z) => x * (p - z) - y;
     const getDz = (x, y, z) => x * y - b * z;
 
-	let preY = pos.y;
-	let preZ = pos.z;
-	let preX = pos.x;
+	let preX = position.x;
+	let preY = position.y;
+	let preZ = position.z;
 
 	let k1x = getDx(preX, preY);
 	let k1y = getDy(preX, preY, preZ);
