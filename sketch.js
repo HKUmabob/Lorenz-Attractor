@@ -1,7 +1,3 @@
-let x = 0.01;
-let y = 0;
-let z = 0;
-
 const p = 28;
 const s = 10;
 const b = 8 / 3;
@@ -26,6 +22,7 @@ let scalingFactor = 5.5;
 
 let singlePointMode;
 let threeTrailsMode;
+let manyPointMode
 
 function setup() {
 	createCanvas(windowWidth, windowHeight, WEBGL);
@@ -34,8 +31,10 @@ function setup() {
 	
 	singlePointMode = new SinglePointMode();
 	threeTrailsMode = new ThreeTailsMode();
+	manyPointMode = new ManyPointMode();
 	singlePointMode.init();
 	threeTrailsMode.init();
+	manyPointMode.init();
 
 	dropdown = createSelect();
 	dropdown.position(10, 10);
@@ -68,9 +67,6 @@ function draw() {
 	if (show_critical) {
 		drawCritical();
 	}
-
-
-	//frameRate(120);
 }
 
 function keyPressed() {
@@ -89,6 +85,7 @@ function chnageMode() {
 
 	threeTrailsMode.init();
 	singlePointMode.init();
+	manyPointMode.init();
 }
 
 function drawSelectedMode(){
@@ -99,7 +96,7 @@ function drawSelectedMode(){
 		threeTrailsMode.updateTrails();
 
 	} else if (currentMode === 'Many Point'){
-
+		manyPointMode.movePoints();
 	}
 }
 
