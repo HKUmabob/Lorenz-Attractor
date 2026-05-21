@@ -6,8 +6,7 @@ class ThreeTailsMode {
     }
 
     updateTrails(){
-        scale(5.5)
- 
+        
         this.trail1.upadateDraw();
         this.trail2.upadateDraw();
         this.trail3.upadateDraw();
@@ -17,6 +16,10 @@ class ThreeTailsMode {
         this.trail1.points = [];
         this.trail2.points = [];
         this.trail3.points = [];
+
+        this.trail1.age = 0
+        this.trail2.age = 0
+        this.trail3.age = 0
 
         this.trail1.points.push(createVector(0.01, 1, 0.59));
         this.trail2.points.push(createVector(0.01, 1, 0.43));
@@ -28,7 +31,9 @@ class ThreeTailsMode {
 
 class IndividualTrail {
     constructor(color){
-        this.points;;
+        this.points;
+        this.age;
+        
         this.p = 28;
         this.s = 10;
         this.b = 8 / 3;
@@ -57,12 +62,14 @@ class IndividualTrail {
         }
         endShape();
 
-        if (frameCount > 400) {
+        if (this.age > 400) {
             this.points.shift();
         }
 
         this.currentPosition = this.points[this.points.length - 1];
         this.nextPosition = calculateRk4(this.currentPosition, this.s, this.p, this.b, this.h);
         this.points.push(this.nextPosition);
+        
+        this.age++
     }
 }

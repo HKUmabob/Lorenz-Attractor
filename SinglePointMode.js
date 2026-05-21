@@ -18,7 +18,6 @@ class SinglePointMode {
     }
     
     updateDraw(){
-        scale(5.5);
 
         this.currentHue = 0;
         for (let p of this.points){

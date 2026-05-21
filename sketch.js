@@ -21,6 +21,7 @@ var easycam;
 let dropdown;
 let currentMode;
 let show_critical = false;
+let scalingFactor = 5.5;
 
 
 let singlePointMode;
@@ -28,7 +29,6 @@ let threeTrailsMode;
 
 function setup() {
 	createCanvas(windowWidth, windowHeight, WEBGL);
-	translate(width / 2, height / 2);
 	colorMode(HSB);
 	setAttributes('antialias', true);
 	
@@ -44,16 +44,23 @@ function setup() {
 	dropdown.option('3 Trails');
 	dropdown.option('Many Point');
 	dropdown.changed(chnageMode);
-	console.log(p5.Vector.lerp(
+
+	lookPosition = p5.Vector.lerp(
 		createVector(critical_x1, critical_y1, critical_z1),
 		createVector(critical_x2, critical_y2, critical_z2),
 		0.5
-	));
-	easycam = createEasyCam();
+	);
 
+	easycam = createEasyCam({
+        distance: 500,
+        center: [lookPosition.x * scalingFactor, lookPosition.y * scalingFactor, lookPosition.z * scalingFactor]
+    });
+
+	easycam.pushResetState();
 }
 
 function draw() {
+	scale(scalingFactor);
 	background(0);
 
 	drawSelectedMode();
@@ -79,10 +86,9 @@ function windowResized() {
 
 function chnageMode() {
 	currentMode = dropdown.value();
-	console.log(dropdown.value())
 
-	singlePointMode.init();
 	threeTrailsMode.init();
+	singlePointMode.init();
 }
 
 function drawSelectedMode(){
