@@ -29,7 +29,7 @@ class ManyPointMode{
     }
 
     movePoints(){
-        strokeWeight(3);
+        strokeWeight(3.5);
         noFill();
 
         let preX, preZ, preY, nextX, nextY, nextZ, k1x, k1y, k1z, k2x, k2y, k2z, k3x, k3y, k3z, k4x, k4y, k4z;
@@ -87,7 +87,6 @@ class ManyPointMode{
             stroke(this.hue, 100,175, 0.4);                                                         // <--
 
             vertex(nextX, nextY, nextZ);
-;
         }
 
         
