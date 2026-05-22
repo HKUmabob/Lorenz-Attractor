@@ -1,6 +1,6 @@
 class ManyPointMode{
     constructor(p, s, b, h, scale){
-        this.particles = 75000;
+        this.particles = 100000;
         this.points = new Float32Array(this.particles * 3);
         this.p = p;
         this.s = s;
