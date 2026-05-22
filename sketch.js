@@ -51,13 +51,13 @@ function setup() {
 	);
 
 	easycam = createEasyCam({
-        distance: 500,
+        distance: 360,
         center: [lookPosition.x * scalingFactor, lookPosition.y * scalingFactor, lookPosition.z * scalingFactor]
     });
 
 	easycam.pushResetState();
 
-	frameRate(100);
+	//frameRate(100);
 	chnageMode();
 }
 

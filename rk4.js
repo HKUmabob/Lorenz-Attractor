@@ -37,5 +37,4 @@ function calculateRk4(position, p, s, b, h) {
 	let nextZ = preZ + (h / 6) * (k1z + 2 * k2z + 2 * k3z + k4z);
 
 	position.set(nextX, nextY, nextZ);
-    return dist(preX, preY, preZ, position.x, position.y, position.z);
 }
