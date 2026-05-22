@@ -29,9 +29,9 @@ function setup() {
 	colorMode(HSB);
 	setAttributes('antialias', true);
 	
-	singlePointMode = new SinglePointMode();
-	threeTrailsMode = new ThreeTailsMode();
-	manyPointMode = new ManyPointMode();
+	singlePointMode = new SinglePointMode(p, s, b, h);
+	threeTrailsMode = new ThreeTailsMode(p, s, b, h);
+	manyPointMode = new ManyPointMode(p, s, b, h, scalingFactor);
 	singlePointMode.init();
 	threeTrailsMode.init();
 	manyPointMode.init();
@@ -56,6 +56,9 @@ function setup() {
     });
 
 	easycam.pushResetState();
+
+	frameRate(100);
+	chnageMode();
 }
 
 function draw() {
@@ -97,6 +100,8 @@ function drawSelectedMode(){
 
 	} else if (currentMode === 'Many Point'){
 		manyPointMode.movePoints();
+	} else if (currentMode === 'Select a mode to draw') {
+		show_critical = false;
 	}
 }
 
@@ -124,7 +129,9 @@ function keyPressed() {
     }
 
     if (key == 'y') {
-        show_critical = true;
+        if (currentMode !== 'Select a mode to draw'){
+			show_critical = true;
+		}
     }
 
     if (key == 'n') {

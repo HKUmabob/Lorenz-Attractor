@@ -1,8 +1,13 @@
 class ThreeTailsMode {
-    constructor() {
-        this.trail1 = new IndividualTrail(color(180, 100, 100));
-        this.trail2 = new IndividualTrail(color(60, 100, 100));
-        this.trail3 = new IndividualTrail(color(327, 92, 100));
+    constructor(p, s, b, h){
+        this.points = [];
+        this.p = p;
+        this.s = s;
+        this.b = b;
+        this.h = h;
+        this.trail1 = new IndividualTrail(this.p, this.s,  this.b, this.h, color(180, 100, 100));
+        this.trail2 = new IndividualTrail(this.p, this.s,  this.b, this.h, color(60, 100, 100));
+        this.trail3 = new IndividualTrail(this.p, this.s,  this.b, this.h, color(327, 92, 100));
     }
 
     updateTrails(){
@@ -21,35 +26,38 @@ class ThreeTailsMode {
         this.trail2.age = 0
         this.trail3.age = 0
 
-        this.trail1.points.push(createVector(0.01, 1, 0.59));
-        this.trail2.points.push(createVector(0.01, 1, 0.43));
-        this.trail3.points.push(createVector(0.01, 1, 0.25));
-        frameRate(100);
+        this.trail1.currentPosition = createVector(0.19, 1.2, 0.59)
+        this.trail2.currentPosition = createVector(0.16, 1.1, 0.43)
+        this.trail3.currentPosition = createVector(0.13, 1.3, 0.25)
+
+        this.trail1.points.push(this.trail1.currentPosition.copy());
+        this.trail2.points.push(this.trail2.currentPosition.copy());
+        this.trail3.points.push(this.trail3.currentPosition.copy());
     }
     
 }
 
 class IndividualTrail {
-    constructor(color){
+    constructor(p, s, b, h, color){
         this.points;
         this.age;
         
-        this.p = 28;
-        this.s = 10;
-        this.b = 8 / 3;
-        this.h = 0.01;
+        this.p = p;
+        this.s = s;
+        this.b = b;
+        this.h = h;
 
         this.color = color;
 
         this.currentPosition;
-        this.nextPosition;
     }
 
     upadateDraw() {
         noFill();
-        beginShape();
         strokeWeight(3);
         stroke(this.color);
+        
+        beginShape();
         for (let point of this.points) {
             vertex(point.x, point.y, point.z);
             if (point == this.points[this.points.length - 1]) {
@@ -66,9 +74,8 @@ class IndividualTrail {
             this.points.shift();
         }
 
-        this.currentPosition = this.points[this.points.length - 1];
-        this.nextPosition = calculateRk4(this.currentPosition, this.s, this.p, this.b, this.h);
-        this.points.push(this.nextPosition);
+        calculateRk4(this.currentPosition, this.p, this.s, this.b, this.h);
+        this.points.push(this.currentPosition.copy());
         
         this.age++
     }

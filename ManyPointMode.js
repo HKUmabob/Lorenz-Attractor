@@ -1,17 +1,18 @@
 class ManyPointMode{
-    constructor(){
-        this.p = 28;
-        this.s = 10;
-        this.b = 8 / 3;
-        this.h = 0.01;
-        this.particles = 50000;
+    constructor(p, s, b, h, scale){
+        this.points = [];
+        this.p = p;
+        this.s = s;
+        this.b = b;
+        this.h = h;
+        this.scale = sqrt(scale)
+        this.particles = 100000;
 
         this.points;
         this.hue;
 
         this.coord;
         this.currentPosition;
-        this.nextPosition;
     }
 
     init(){
@@ -26,22 +27,17 @@ class ManyPointMode{
     }
 
     movePoints(){
-        strokeWeight(3);
+        strokeWeight(4);
         noFill();
 
         beginShape(POINTS);
         for(let i = 0; i < this.particles; i++) {
             this.currentPosition = this.points[i];
-            this.nextPosition = calculateRk4(this.currentPosition, this.s, this.p, this.b, this.h);
-
-            this.velocity = p5.Vector.dist(this.currentPosition, this.nextPosition);
-            this.hue = map(this.velocity, 0.1*2.34520787991, 1.2*2.34520787991, 0, 240);
+            this.velocity = calculateRk4(this.currentPosition, this.p, this.s, this.b, this.h);
+            this.hue = map(this.velocity, 0.1 * this.scale, 1.2 * this.scale, 0, 240);
             
             stroke(this.hue, 100,175, 0.4);
             vertex(this.currentPosition.x, this.currentPosition.y, this.currentPosition.z);
-            
-
-            this.currentPosition.set(this.nextPosition.x, this.nextPosition.y, this.nextPosition.z);
         }
 
         endShape();

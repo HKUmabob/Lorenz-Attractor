@@ -1,28 +1,29 @@
 class SinglePointMode {
-    constructor(){
+    constructor(p, s, b, h){
         this.points = [];
-        this.p = 28;
-        this.s = 10;
-        this.b = 8 / 3;
-        this.h = 0.01;
+        this.p = p;
+        this.s = s;
+        this.b = b;
+        this.h = h;
         this.hueIncrement = 1.5
         this.currentHue = 0;
         this.currentPosition;
-        this.nextPosition;
     }
 
     init(){
         this.points = [];
-        this.points.push(createVector(0.01, 0, 0));
+        this.currentPosition = createVector(0.01, 0, 0);
+        this.points.push(this.currentPosition.copy());
         strokeWeight(5);
     }
     
     updateDraw(){
 
         this.currentHue = 0;
+        beginShape(POINTS);
         for (let p of this.points){
             stroke(this.currentHue, 100, 100);
-		    point(p.x, p.y, p.z);
+		    vertex(p.x, p.y, p.z);
 
             if (this.currentHue >= 360){
                 this.hueIncrement = -1.5;
@@ -33,10 +34,10 @@ class SinglePointMode {
 
             this.currentHue += this.hueIncrement;
         }
+        endShape();
 
-        this.currentPosition = this.points[this.points.length - 1];
-        this.nextPosition = calculateRk4(this.currentPosition, this.s, this.p, this.b, this.h);
-        this.points.push(this.nextPosition);
+        calculateRk4(this.currentPosition, this.p, this.s, this.b, this.h);
+        this.points.push(this.currentPosition.copy());
 
 
         if (this.points.length >= 3000){
