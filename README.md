@@ -22,7 +22,6 @@ Visualizes a **single initial position** tracking $3,000$ of its past positions 
 ### 2\. Sensitivity to Initial Conditions
 
 Features **three initial positions** placed extremely close to one another with a $400$-point trail length.
-
 Points can be moved closer. They will simply take more time to completely diverge.
 ![alt text](https://github.com/HKUmabob/Lorenz-Attractor/blob/main/Images/3Trails.jpg?raw=true)
 
@@ -31,7 +30,6 @@ Points can be moved closer. They will simply take more time to completely diverg
 ### 3\. Mass Particle Simulation
 
 An intense simulation tracking **$200,000$ initial positions** simultaneously over $7$ seconds.
-
 Change amount of initial positions in sketch.js line 35
 ![alt text](https://raw.githubusercontent.com/HKUmabob/Lorenz-Attractor/main/Images/ManyPoints.gif)
 
