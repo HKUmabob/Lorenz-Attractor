@@ -29,13 +29,15 @@ function setup() {
 	colorMode(HSB);
 	setAttributes('antialias', true);
 	
-	singlePointMode = new SinglePointMode(p, s, b, h);
-	threeTrailsMode = new ThreeTailsMode(p, s, b, h);
-	manyPointMode = new ManyPointMode(p, s, b, h, scalingFactor);
+	// Initializing all three modes
+	singlePointMode = new SinglePointMode(p, s, b, h, 3000);
+	threeTrailsMode = new ThreeTailsMode(p, s, b, h, 400);
+	manyPointMode = new ManyPointMode(p, s, b, h, scalingFactor, 75000); 	// Increase the last argument if your system can handle it
 	singlePointMode.init();
 	threeTrailsMode.init();
 	manyPointMode.init();
 
+	// Dropdown Menu
 	dropdown = createSelect();
 	dropdown.position(10, 10);
 	dropdown.option('Select a mode to draw');
@@ -44,6 +46,7 @@ function setup() {
 	dropdown.option('Many Point');
 	dropdown.changed(chnageMode);
 
+	// Camera setup
 	lookPosition = p5.Vector.lerp(
 		createVector(critical_x1, critical_y1, critical_z1),
 		createVector(critical_x2, critical_y2, critical_z2),
@@ -61,6 +64,7 @@ function setup() {
 	chnageMode();
 }
 
+
 function draw() {
 	scale(scalingFactor);
 	background(0);
@@ -72,17 +76,11 @@ function draw() {
 	}
 }
 
-function keyPressed() {
-	if (key == 'a') {
-		saveCanvas("lorez_atrractor", 'jpg');
-	}
-}
 
 
-function windowResized() {
-	resizeCanvas(windowWidth, windowHeight);
-}
-
+/**
+ * Passed to the drop down menu
+ */
 function chnageMode() {
 	currentMode = dropdown.value();
 
@@ -91,30 +89,36 @@ function chnageMode() {
 	manyPointMode.init();
 }
 
+
 function drawSelectedMode(){
 	if (currentMode === 'Single Point'){
 		singlePointMode.updateDraw();
 		
 	} else if (currentMode === '3 Trails'){
 		threeTrailsMode.updateTrails();
-
+		
 	} else if (currentMode === 'Many Point'){
 		manyPointMode.movePoints();
+
 	} else if (currentMode === 'Select a mode to draw') {
 		show_critical = false;
 	}
 }
 
+
+/**
+ * Draws the critical points of the Attractor
+ */
 function drawCritical() {
 	push();
 	noStroke();
 	fill(255);
-
+	
 	push();
 	translate(critical_x1, critical_y1, critical_z1);
 	sphere(1);
 	pop();
-
+	
 	push();
 	translate(critical_x2, critical_y2, critical_z2);
 	sphere(1);
@@ -123,18 +127,37 @@ function drawCritical() {
 	pop()
 }
 
-function keyPressed() {
-    if (key == 'a') {
-        saveCanvas('3point_Lorenz', 'png')
-    }
 
+function keyPressed() {
     if (key == 'y') {
-        if (currentMode !== 'Select a mode to draw'){
+		if (currentMode !== 'Select a mode to draw'){
 			show_critical = true;
 		}
     }
 
     if (key == 'n') {
-        show_critical = false;
+		show_critical = false;
     }
+
+
+	//save as a picture / gif
+	//saving as a gif might not work if there are too many points or the gif length is too long
+	//reduce the number of points and reduce the color range in ManyPointsMode.js line 105
+	if (key == 'p') {
+		if (currentMode === 'Single Point'){
+			saveCanvas('SinglePoint', 'jpg');
+		
+		} else if (currentMode === '3 Trails'){
+			saveCanvas('3Trails', 'jpg');
+			
+		} else if (currentMode === 'Many Point'){
+			saveGif('ManyPoints', 7);
+
+		}
+	}
+}
+	
+
+function windowResized() {
+		resizeCanvas(windowWidth, windowHeight);
 }

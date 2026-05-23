@@ -1,13 +1,27 @@
+/**
+ * 
+ * @param {p5.Vector} position Current coordinates
+ * @param {number} p Phi
+ * @param {number} s Sigma
+ * @param {number} b Beta
+ * @param {number} h Inteval width
+ */
 function calculateRk4(position, p, s, b, h) {
+
+    // Code can be written in a much cleaner way if functions are used for the 3 DEs
+    // But that would mean calling those functions thousands of times per frame
+    // Hard coded approach gets rid of this overhead
 
 	let preX = position.x;
 	let preY = position.y;
 	let preZ = position.z;
 
+    // k1
 	let k1x = s * (preY - preX);
     let k1y = preX * (p - preZ) - preY;
     let k1z = preX * preY - b * preZ;
 
+    // k2
 	let h2 = h / 2;
     let x2 = preX + k1x * h2;
     let y2 = preY + k1y * h2;

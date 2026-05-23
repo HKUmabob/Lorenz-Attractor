@@ -1,15 +1,32 @@
+/**
+ * Draws three trails with close initial positions to demonstrate path deviations
+ */
 class ThreeTailsMode {
-    constructor(p, s, b, h){
+
+    /**
+     * 
+     * @param {number} p Phi
+     * @param {number} s Sigma
+     * @param {number} b Beta
+     * @param {number} h Inteval width
+     * @param {number} trailLength Length of trail
+     */
+    constructor(p, s, b, h, trailLength){
         this.points = [];
         this.p = p;
         this.s = s;
         this.b = b;
         this.h = h;
-        this.trail1 = new IndividualTrail(this.p, this.s,  this.b, this.h, color(180, 100, 100));
-        this.trail2 = new IndividualTrail(this.p, this.s,  this.b, this.h, color(60, 100, 100));
-        this.trail3 = new IndividualTrail(this.p, this.s,  this.b, this.h, color(327, 92, 100));
+
+        this.trail1 = new IndividualTrail(this.p, this.s,  this.b, this.h, color(180, 100, 100), trailLength);
+        this.trail2 = new IndividualTrail(this.p, this.s,  this.b, this.h, color(60, 100, 100), trailLength);
+        this.trail3 = new IndividualTrail(this.p, this.s,  this.b, this.h, color(327, 92, 100), trailLength);
     }
 
+
+    /**
+     * Update trails
+     */
     updateTrails(){
         
         this.trail1.upadateDraw();
@@ -17,6 +34,10 @@ class ThreeTailsMode {
         this.trail3.upadateDraw();
     }
 
+
+    /**
+     * Used when initializing at setup and changing mode
+     */
     init(){
         this.trail1.points = [];
         this.trail2.points = [];
@@ -37,8 +58,9 @@ class ThreeTailsMode {
     
 }
 
+
 class IndividualTrail {
-    constructor(p, s, b, h, color){
+    constructor(p, s, b, h, color, trailLength){
         this.points;
         this.age;
         
@@ -46,12 +68,15 @@ class IndividualTrail {
         this.s = s;
         this.b = b;
         this.h = h;
+        this.trailLength = trailLength
 
         this.color = color;
 
         this.currentPosition;
     }
 
+
+    
     upadateDraw() {
         noFill();
         strokeWeight(3);
@@ -70,7 +95,7 @@ class IndividualTrail {
         }
         endShape();
 
-        if (this.age > 400) {
+        if (this.age > this.trailLength) {
             this.points.shift();
         }
 

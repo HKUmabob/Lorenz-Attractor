@@ -1,14 +1,23 @@
 class ManyPointMode{
-    constructor(p, s, b, h, scale){
-        this.particles = 100000;
+    /**
+     * 
+     * @param {number} p Phi
+     * @param {number} s Sigma
+     * @param {number} b Beta
+     * @param {number} h Inteval width
+     * @param {number} scale Scaling factor
+     * @param {number} particles Number of particles
+     */
+    constructor(p, s, b, h, scale, particles){
+        this.particles = particles;
         this.points = new Float32Array(this.particles * 3);
         this.p = p;
         this.s = s;
         this.b = b;
         this.h = h;
 
-        this.scaledDistanceMin = 0.1**2 * scale;
-        this.scaledDistanceMax = 1.2**2 * scale;
+        this.scaledDistanceMin = 0.1**2 * scale;// These two are used for color changes
+        this.scaledDistanceMax = 1.2**2 * scale;// Visuals may suffer if the Attractor parameters are changed
 
         this.points;
         this.hue;
@@ -17,6 +26,9 @@ class ManyPointMode{
         this.velSqrd;
     }
 
+    /**
+     * Used when initializing at setup and changing mode
+     */
     init(){
         let index
         for(let i = 0; i < this.particles; i++) {
@@ -28,27 +40,33 @@ class ManyPointMode{
         stroke(20, 100, 100, 0.5);
     }
 
+    /**
+     * Update positions and draw
+     */
     movePoints(){
         strokeWeight(3.5);
         noFill();
-
+        
         let preX, preZ, preY, nextX, nextY, nextZ, k1x, k1y, k1z, k2x, k2y, k2z, k3x, k3y, k3z, k4x, k4y, k4z;
         let index, x2, y2, z2, x3, y3, z3, x4, y4, z4, h2;
 
         beginShape(POINTS);
         for(let i = 0; i < this.particles; i++) {
             this.currentPosition = this.points[i];
-
+            
             index = i * 3;
-
+            
+            // RK4 is written in this function itself to further reduce overhead
             preX = this.points[index];
             preY = this.points[index + 1];
             preZ = this.points[index + 2];
 
+            // k1
             k1x = this.s * (preY - preX);
             k1y = preX * (p - preZ) - preY;
             k1z = preX * preY - b * preZ;
             
+            // k2
             h2 = this.h / 2;
             x2 = preX + k1x * h2;
             y2 = preY + k1y * h2;
@@ -77,13 +95,14 @@ class ManyPointMode{
             nextY = preY + (this.h / 6) * (k1y + 2 * k2y + 2 * k3y + k4y);
             nextZ = preZ + (this.h / 6) * (k1z + 2 * k2z + 2 * k3z + k4z);
 	        
+            // Updating the coordinates in the array.
             this.points[index] = nextX;
             this.points[index + 1] = nextY;
             this.points[index + 2] = nextZ;
 
             
-            this.velSqrd = (preX - nextX)**2 + (preY - nextY)**2 + (preZ - nextZ)**2;               //comment out these 3 lines to get a massive performance boost
-            this.hue = map(this.velSqrd, this.scaledDistanceMin, this.scaledDistanceMax, 0, 240);   // <--
+            this.velSqrd = (preX - nextX)**2 + (preY - nextY)**2 + (preZ - nextZ)**2;               // Comment out these 3 lines to get a performance boost
+            this.hue = map(this.velSqrd, this.scaledDistanceMin, this.scaledDistanceMax, 0, 180);   // <-- Last 2 arguments represent the color range
             stroke(this.hue, 100,175, 0.4);                                                         // <--
 
             vertex(nextX, nextY, nextZ);
