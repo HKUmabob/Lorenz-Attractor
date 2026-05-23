@@ -15,7 +15,7 @@ Select a mode from the drop-down menu:
 ### 1\. Single Trajectory
 
 Visualizes a **single initial position** tracking $3,000$ of its past positions to map out the iconic "butterfly wings" shape.
-!\[Single Point Trail](https://raw.githubusercontent.com/HKUmabob/Lorenz-Attractor/main/Images/SinglePoint.jpg)
+![alt text](https://raw.githubusercontent.com/HKUmabob/Lorenz-Attractor/main/Images/SinglePoint.jpg)
 
 
 
@@ -24,7 +24,7 @@ Visualizes a **single initial position** tracking $3,000$ of its past positions 
 Features **three initial positions** placed extremely close to one another with a $400$-point trail length.
 
 Points can be moved closer. They will simply take more time to completely diverge.
-!\[Three Close Trails](https://raw.githubusercontent.com/HKUmabob/Lorenz-Attractor/main/Images/3Trails.jpg)
+![alt text](https://github.com/HKUmabob/Lorenz-Attractor/blob/main/Images/3Trails.jpg?raw=true)
 
 
 
@@ -33,7 +33,7 @@ Points can be moved closer. They will simply take more time to completely diverg
 An intense simulation tracking **$200,000$ initial positions** simultaneously over $7$ seconds.
 
 Change amount of initial positions in sketch.js line 35
-!\[Many Points Animation](https://raw.githubusercontent.com/HKUmabob/Lorenz-Attractor/main/Images/ManyPoints.gif)
+![alt text](https://raw.githubusercontent.com/HKUmabob/Lorenz-Attractor/main/Images/ManyPoints.gif)
 
 \---
 
