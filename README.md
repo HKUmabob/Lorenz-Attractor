@@ -1,30 +1,54 @@
-# Lorenz-Attractor
+# Lorenz Attractor Visualization
+
+An interactive simulation showcasing the chaotic and beautiful properties of the **Lorenz Attractor**, a set of chaotic solutions of the Lorenz system. This project visualizes how minor changes in initial conditions lead to vastly different outcomes over time (The Butterfly Effect).
+
+\---
 
 
 
-This project showcases different properties of Lorenz Attractor.
+## Features \& Modes
 
-Select a mode from the drop down menu
-
-Press **'Y'** to show critical points and **'N'** to hide them.
+Select a mode from the drop-down menu:
 
 
 
-Single initial position with 3000 of its past positions
+### 1\. Single Trajectory
 
-!\[Alt Text](https://github.com/HKUmabob/Lorenz-Attractor/blob/main/Images/SinglePoint.jpg?raw=true)
-
-
-
-
-
-Three initial positions which are extremely close to each other and 400 point trail length
-
-!\[Alt Text](https://github.com/HKUmabob/Lorenz-Attractor/blob/main/Images/3Trails.jpg?raw=true)
+Visualizes a **single initial position** tracking $3,000$ of its past positions to map out the iconic "butterfly wings" shape.
+!\[Single Point Trail](https://raw.githubusercontent.com/HKUmabob/Lorenz-Attractor/main/Images/SinglePoint.jpg)
 
 
 
-200000 initial positions over 7 seconds
+### 2\. Sensitivity to Initial Conditions
 
-!\[Alt Text](https://github.com/HKUmabob/Lorenz-Attractor/blob/main/Images/ManyPoints.gif?raw=true)
+Features **three initial positions** placed extremely close to one another with a $400$-point trail length.
+
+Points can be moved closer. They will simply take more time to completely diverge.
+!\[Three Close Trails](https://raw.githubusercontent.com/HKUmabob/Lorenz-Attractor/main/Images/3Trails.jpg)
+
+
+
+### 3\. Mass Particle Simulation
+
+An intense simulation tracking **$200,000$ initial positions** simultaneously over $7$ seconds.
+
+Change amount of initial positions in sketch.js line 35
+!\[Many Points Animation](https://raw.githubusercontent.com/HKUmabob/Lorenz-Attractor/main/Images/ManyPoints.gif)
+
+\---
+
+
+
+## 🎮 Controls
+
+|Key|Action|
+|:-:|-|
+|**`Y`**|Show critical equilibrium points|
+|**`N`**|Hide critical equilibrium points|
+|**`p`**|Save canvas as image / gif|
+|**`Hold Right-Click and Drag`**|Rotate around the Attractor|
+|**`Double Right-Click`**|Reset camera|
+|**`Mouse Wheel Up/Down`**|Zoom In/Out|
+
+\---
 
