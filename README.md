@@ -15,7 +15,7 @@ Select a mode from the drop-down menu:
 ### 1\. Single Trajectory
 
 Visualizes a **single initial position** tracking $3,000$ of its past positions to map out the iconic "butterfly wings" shape.
-![alt text](https://raw.githubusercontent.com/HKUmabob/Lorenz-Attractor/main/Images/SinglePoint.jpg = 500x500)
+![alt text](https://raw.githubusercontent.com/HKUmabob/Lorenz-Attractor/main/Images/SinglePoint.jpg)
 
 
 
